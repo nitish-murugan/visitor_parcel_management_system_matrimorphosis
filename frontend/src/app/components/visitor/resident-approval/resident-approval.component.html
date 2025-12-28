@@ -1,0 +1,298 @@
+<div class="resident-approval-container">
+  <mat-card class="approval-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>assignment</mat-icon>
+        Visitor Management
+      </mat-card-title>
+      <mat-card-subtitle
+        >Manage pending approvals and view visitor history</mat-card-subtitle
+      >
+      <button mat-icon-button (click)="refresh()" matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Tabs for Pending Approvals and History -->
+      <mat-tab-group
+        [(selectedIndex)]="selectedTabIndex"
+        (selectedIndexChange)="onTabChange($event)"
+      >
+        <!-- Tab 1: Pending Approvals -->
+        <mat-tab label="Pending Approvals">
+          <div class="tab-content">
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="loading-container">
+              <mat-spinner diameter="50"></mat-spinner>
+              <p>Loading pending visitors...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div
+              *ngIf="!isLoading && pendingVisitors.length === 0"
+              class="empty-state"
+            >
+              <mat-icon>check_circle</mat-icon>
+              <h3>No Pending Approvals</h3>
+              <p>
+                You don't have any visitors waiting for approval at the moment.
+              </p>
+            </div>
+
+            <!-- Visitors List (Card View) -->
+            <div
+              *ngIf="!isLoading && pendingVisitors.length > 0"
+              class="visitors-grid"
+            >
+              <mat-card
+                *ngFor="let visitor of pendingVisitors"
+                class="visitor-card"
+              >
+                <mat-card-header>
+                  <div class="visitor-avatar" mat-card-avatar>
+                    <mat-icon>person</mat-icon>
+                  </div>
+                  <mat-card-title>{{
+                    visitor.fullName || visitor.visitor_name
+                  }}</mat-card-title>
+                  <mat-card-subtitle>
+                    <mat-chip [class]="getStatusChipClass(visitor.status)">
+                      {{ getStatusLabel(visitor.status) }}
+                    </mat-chip>
+                  </mat-card-subtitle>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <div class="visitor-details">
+                    <div class="detail-row">
+                      <mat-icon>phone</mat-icon>
+                      <span class="detail-label">Phone:</span>
+                      <span class="detail-value">{{
+                        visitor.phone || visitor.visitor_phone || "N/A"
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                      <mat-icon>description</mat-icon>
+                      <span class="detail-label">Purpose:</span>
+                      <span class="detail-value">{{
+                        visitor.purpose || visitor.visitor_purpose || "N/A"
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                      <mat-icon>schedule</mat-icon>
+                      <span class="detail-label">Expected Entry:</span>
+                      <span class="detail-value">{{
+                        formatDateTime(
+                          (visitor.expectedAt | date : "medium") ||
+                            (visitor.expected_entry_time | date : "medium") ||
+                            "N/A"
+                        )
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                      <mat-icon>access_time</mat-icon>
+                      <span class="detail-label">Logged At:</span>
+                      <span class="detail-value">{{
+                        (visitor.createdAt | date : "medium") ||
+                          (visitor.created_at | date : "medium") ||
+                          "N/A"
+                      }}</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+
+                <mat-card-actions>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="approveVisitor(visitor)"
+                  >
+                    <mat-icon>check</mat-icon>
+                    Approve
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="rejectVisitor(visitor)"
+                  >
+                    <mat-icon>close</mat-icon>
+                    Reject
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Tab 2: Visitor History -->
+        <mat-tab label="Visitor History">
+          <div class="tab-content">
+            <!-- Filters Section -->
+            <div class="filters-section">
+              <h3 class="filters-title">
+                <mat-icon>filter_list</mat-icon>
+                Filters
+              </h3>
+
+              <div class="filters-row">
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-label>Status</mat-label>
+                  <mat-select
+                    [(value)]="filterStatus"
+                    (selectionChange)="onStatusFilterChange()"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusOptions"
+                      [value]="option.value"
+                    >
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-icon matPrefix>pending_actions</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-label>From Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="pickerFrom"
+                    [(ngModel)]="filterDateFrom"
+                    (dateChange)="onDateFromChange()"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="pickerFrom"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #pickerFrom></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="filter-field">
+                  <mat-label>To Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="pickerTo"
+                    [(ngModel)]="filterDateTo"
+                    (dateChange)="onDateToChange()"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="pickerTo"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #pickerTo></mat-datepicker>
+                </mat-form-field>
+
+                <button
+                  mat-raised-button
+                  (click)="clearFilters()"
+                  class="clear-filters-btn"
+                >
+                  <mat-icon>clear</mat-icon>
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoadingHistory" class="loading-container">
+              <mat-spinner diameter="50"></mat-spinner>
+              <p>Loading visitor history...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div
+              *ngIf="!isLoadingHistory && filteredHistory.length === 0"
+              class="empty-state"
+            >
+              <mat-icon>history</mat-icon>
+              <h3>No Visitor History</h3>
+              <p>No visitors found matching the selected filters.</p>
+            </div>
+
+            <!-- History List -->
+            <div
+              *ngIf="!isLoadingHistory && filteredHistory.length > 0"
+              class="visitors-grid"
+            >
+              <mat-card
+                *ngFor="let visitor of filteredHistory"
+                class="visitor-card history-card"
+              >
+                <mat-card-header>
+                  <div
+                    class="visitor-avatar"
+                    mat-card-avatar
+                    [class]="'avatar-' + visitor.status"
+                  >
+                    <mat-icon>{{ getStatusIcon(visitor.status) }}</mat-icon>
+                  </div>
+                  <mat-card-title>{{ visitor.visitor_name }}</mat-card-title>
+                  <mat-card-subtitle>
+                    <mat-chip [class]="getStatusChipClass(visitor.status)">
+                      {{ getStatusLabel(visitor.status) }}
+                    </mat-chip>
+                  </mat-card-subtitle>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <div class="visitor-details">
+                    <div class="detail-row">
+                      <mat-icon>phone</mat-icon>
+                      <span class="detail-label">Phone:</span>
+                      <span class="detail-value">{{
+                        visitor.visitor_phone || "N/A"
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                      <mat-icon>description</mat-icon>
+                      <span class="detail-label">Purpose:</span>
+                      <span class="detail-value">{{
+                        visitor.visitor_purpose || "N/A"
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row" *ngIf="visitor.entry_time">
+                      <mat-icon>login</mat-icon>
+                      <span class="detail-label">Entry Time:</span>
+                      <span class="detail-value">{{
+                        formatDateTime(visitor.entry_time)
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row" *ngIf="visitor.exit_time">
+                      <mat-icon>logout</mat-icon>
+                      <span class="detail-label">Exit Time:</span>
+                      <span class="detail-value">{{
+                        formatDateTime(visitor.exit_time)
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row" *ngIf="visitor.approval_time">
+                      <mat-icon>check_circle</mat-icon>
+                      <span class="detail-label">Approved At:</span>
+                      <span class="detail-value">{{
+                        formatDateTime(visitor.approval_time)
+                      }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                      <mat-icon>access_time</mat-icon>
+                      <span class="detail-label">Logged At:</span>
+                      <span class="detail-value">{{
+                        formatDateTime(visitor.created_at)
+                      }}</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>

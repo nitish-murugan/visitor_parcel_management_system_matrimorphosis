@@ -1,0 +1,145 @@
+<div class="resident-parcel-container">
+  <mat-card class="parcels-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>local_shipping</mat-icon>
+        My Parcels
+      </mat-card-title>
+      <mat-card-subtitle
+        >View and manage your parcel deliveries</mat-card-subtitle
+      >
+      <button mat-icon-button (click)="refresh()" matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-progress-bar
+        mode="indeterminate"
+        *ngIf="isLoading"
+      ></mat-progress-bar>
+      <!-- Skeleton Loader while loading -->
+      <div *ngIf="isLoading" class="parcels-grid">
+        <mat-card class="parcel-card skeleton-card" *ngFor="let s of [1, 2, 3]">
+          <mat-card-header>
+            <div class="parcel-avatar skeleton-circle" mat-card-avatar></div>
+            <div class="skeleton-line title"></div>
+            <div class="skeleton-chip"></div>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="parcel-details">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="skeleton-btn"></div>
+            <div class="skeleton-btn"></div>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && parcels.length === 0" class="empty-state">
+        <mat-icon>inbox</mat-icon>
+        <h3>No Parcels</h3>
+        <p>You don't have any parcels at the moment.</p>
+      </div>
+
+      <!-- Parcels List -->
+      <div *ngIf="!isLoading && parcels.length > 0" class="parcels-grid">
+        <mat-card *ngFor="let parcel of parcels" class="parcel-card">
+          <mat-card-header>
+            <div
+              class="parcel-avatar"
+              mat-card-avatar
+              [class]="'avatar-' + parcel.status"
+            >
+              <mat-icon>{{ getStatusIcon(parcel.status) }}</mat-icon>
+            </div>
+            <mat-card-title>{{ parcel.parcelNumber }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-chip [class]="getStatusChipClass(parcel.status)">
+                {{ getStatusLabel(parcel.status) }}
+              </mat-chip>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="parcel-details">
+              <div class="detail-row">
+                <mat-icon>account_circle</mat-icon>
+                <span class="detail-label">From:</span>
+                <span class="detail-value">{{ parcel.senderName }}</span>
+              </div>
+
+              <div class="detail-row" *ngIf="parcel.senderPhone">
+                <mat-icon>phone</mat-icon>
+                <span class="detail-label">Phone:</span>
+                <span class="detail-value">{{ parcel.senderPhone }}</span>
+              </div>
+
+              <div class="detail-row" *ngIf="parcel.description">
+                <mat-icon>description</mat-icon>
+                <span class="detail-label">Description:</span>
+                <span class="detail-value">{{ parcel.description }}</span>
+              </div>
+
+              <div class="detail-row" *ngIf="parcel.receivedAt">
+                <mat-icon>schedule</mat-icon>
+                <span class="detail-label">Received:</span>
+                <span class="detail-value">{{
+                  formatDateTime(parcel.receivedAt)
+                }}</span>
+              </div>
+
+              <div class="detail-row" *ngIf="parcel.acknowledgedAt">
+                <mat-icon>done</mat-icon>
+                <span class="detail-label">Acknowledged:</span>
+                <span class="detail-value">{{
+                  formatDateTime(parcel.acknowledgedAt)
+                }}</span>
+              </div>
+
+              <div class="detail-row" *ngIf="parcel.collectedAt">
+                <mat-icon>check_circle</mat-icon>
+                <span class="detail-label">Collected:</span>
+                <span class="detail-value">{{
+                  formatDateTime(parcel.collectedAt)
+                }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button
+              *ngIf="canAcknowledge(parcel)"
+              mat-raised-button
+              color="primary"
+              (click)="acknowledgeParcel(parcel)"
+              [disabled]="processingIds.has(parcel.id)"
+            >
+              <mat-icon>done</mat-icon>
+              Acknowledge Pickup
+            </button>
+            <button
+              *ngIf="parcel.status === 'acknowledged'"
+              mat-raised-button
+              color="accent"
+              (click)="collectParcel(parcel)"
+              [disabled]="processingIds.has(parcel.id)"
+            >
+              <mat-icon>check_circle</mat-icon>
+              Collect Parcel
+            </button>
+            <span *ngIf="parcel.status === 'collected'" class="collected-badge">
+              <mat-icon>verified</mat-icon>
+              Collected
+            </span>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

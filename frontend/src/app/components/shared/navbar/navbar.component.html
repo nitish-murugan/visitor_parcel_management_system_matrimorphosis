@@ -1,0 +1,284 @@
+<mat-toolbar color="primary" class="navbar">
+  <div class="navbar-container">
+    <!-- Logo / Brand -->
+    <div class="navbar-brand" routerLink="/home">
+      <mat-icon>apartment</mat-icon>
+      <span class="brand-text">Visitor & Parcel</span>
+    </div>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="desktop-nav" *ngIf="currentUser">
+      <!-- Guard Menu -->
+      <ng-container *ngIf="isGuard">
+        <a mat-button routerLink="/guard" routerLinkActive="active-link">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </a>
+        <a
+          mat-button
+          routerLink="/guard/visitor-log"
+          routerLinkActive="active-link"
+        >
+          <mat-icon>person_add</mat-icon>
+          Log Visitor
+        </a>
+        <a
+          mat-button
+          routerLink="/guard/parcel-log"
+          routerLinkActive="active-link"
+        >
+          <mat-icon>local_shipping</mat-icon>
+          Log Parcel
+        </a>
+      </ng-container>
+
+      <!-- Resident Menu -->
+      <ng-container *ngIf="isResident">
+        <a mat-button routerLink="/home" routerLinkActive="active-link">
+          <mat-icon>home</mat-icon>
+          Home
+        </a>
+        <a
+          mat-button
+          routerLink="/resident/approvals"
+          routerLinkActive="active-link"
+          [matBadge]="visitorNotificationCount"
+          [matBadgeHidden]="visitorNotificationCount === 0"
+          matBadgeColor="warn"
+        >
+          <mat-icon>how_to_reg</mat-icon>
+          Approvals
+        </a>
+        <a
+          mat-button
+          routerLink="/resident/parcels"
+          routerLinkActive="active-link"
+          [matBadge]="parcelNotificationCount"
+          [matBadgeHidden]="parcelNotificationCount === 0"
+          matBadgeColor="warn"
+        >
+          <mat-icon>inventory</mat-icon>
+          My Parcels
+        </a>
+      </ng-container>
+
+      <!-- Admin Menu -->
+      <ng-container *ngIf="isAdmin">
+        <a mat-button routerLink="/admin" routerLinkActive="active-link">
+          <mat-icon>admin_panel_settings</mat-icon>
+          Dashboard
+        </a>
+        <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
+          <mat-icon>people</mat-icon>
+          Users
+        </a>
+        <a
+          mat-button
+          routerLink="/admin/reports"
+          routerLinkActive="active-link"
+        >
+          <mat-icon>analytics</mat-icon>
+          Reports
+        </a>
+      </ng-container>
+    </nav>
+
+    <span class="spacer"></span>
+
+    <!-- User Menu & Notifications -->
+    <div class="navbar-actions" *ngIf="currentUser">
+      <!-- Notifications Badge (Mobile/Desktop) -->
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="notifMenu"
+        *ngIf="isResident && totalNotifications > 0"
+      >
+        <mat-icon [matBadge]="totalNotifications" matBadgeColor="warn"
+          >notifications</mat-icon
+        >
+      </button>
+      <mat-menu #notifMenu="matMenu">
+        <button
+          mat-menu-item
+          routerLink="/resident/approvals"
+          *ngIf="visitorNotificationCount > 0"
+        >
+          <mat-icon>how_to_reg</mat-icon>
+          <span
+            >{{ visitorNotificationCount }} Pending Visitor{{
+              visitorNotificationCount > 1 ? "s" : ""
+            }}</span
+          >
+        </button>
+        <button
+          mat-menu-item
+          routerLink="/resident/parcels"
+          *ngIf="parcelNotificationCount > 0"
+        >
+          <mat-icon>inventory</mat-icon>
+          <span
+            >{{ parcelNotificationCount }} Pending Parcel{{
+              parcelNotificationCount > 1 ? "s" : ""
+            }}</span
+          >
+        </button>
+      </mat-menu>
+
+      <!-- User Menu -->
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+        <mat-icon>account_circle</mat-icon>
+        <span class="user-name hide-on-mobile">{{ userName }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <div class="user-menu-header">
+          <div class="user-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
+          <div class="user-info">
+            <div class="user-name-full">{{ userName }}</div>
+            <div class="user-role">{{ currentUser.role | titlecase }}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          <span>My Profile</span>
+        </button>
+        <button mat-menu-item routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+
+      <!-- Mobile Menu Toggle -->
+      <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMenu()">
+        <mat-icon>{{ isMenuOpen ? "close" : "menu" }}</mat-icon>
+      </button>
+    </div>
+
+    <!-- Login Button (if not logged in) -->
+    <div class="navbar-actions" *ngIf="!currentUser">
+      <a mat-raised-button color="accent" routerLink="/login">
+        <mat-icon>login</mat-icon>
+        Login
+      </a>
+    </div>
+  </div>
+</mat-toolbar>
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-nav" [class.open]="isMenuOpen" *ngIf="currentUser">
+  <nav class="mobile-nav-links">
+    <!-- Guard Links -->
+    <ng-container *ngIf="isGuard">
+      <a
+        mat-button
+        routerLink="/guard"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </a>
+      <a
+        mat-button
+        routerLink="/guard/visitor-log"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>person_add</mat-icon>
+        Log Visitor
+      </a>
+      <a
+        mat-button
+        routerLink="/guard/parcel-log"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>local_shipping</mat-icon>
+        Log Parcel
+      </a>
+    </ng-container>
+
+    <!-- Resident Links -->
+    <ng-container *ngIf="isResident">
+      <a
+        mat-button
+        routerLink="/home"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
+      <a
+        mat-button
+        routerLink="/resident/approvals"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+        [matBadge]="visitorNotificationCount"
+        [matBadgeHidden]="visitorNotificationCount === 0"
+        matBadgeColor="warn"
+      >
+        <mat-icon>how_to_reg</mat-icon>
+        Visitor Approvals
+      </a>
+      <a
+        mat-button
+        routerLink="/resident/parcels"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+        [matBadge]="parcelNotificationCount"
+        [matBadgeHidden]="parcelNotificationCount === 0"
+        matBadgeColor="warn"
+      >
+        <mat-icon>inventory</mat-icon>
+        My Parcels
+      </a>
+    </ng-container>
+
+    <!-- Admin Links -->
+    <ng-container *ngIf="isAdmin">
+      <a
+        mat-button
+        routerLink="/admin"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        Dashboard
+      </a>
+      <a
+        mat-button
+        routerLink="/admin/users"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>people</mat-icon>
+        Users
+      </a>
+      <a
+        mat-button
+        routerLink="/admin/reports"
+        (click)="toggleMenu()"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>analytics</mat-icon>
+        Reports
+      </a>
+    </ng-container>
+  </nav>
+</div>
+
+<!-- Mobile Nav Backdrop -->
+<div
+  class="mobile-nav-backdrop"
+  *ngIf="isMenuOpen"
+  (click)="toggleMenu()"
+></div>

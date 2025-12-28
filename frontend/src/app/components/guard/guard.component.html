@@ -1,0 +1,48 @@
+<div class="guard-dashboard">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Security Guard Dashboard</mat-card-title>
+      <mat-card-subtitle>Visitor and Parcel Management</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="dashboard-section">
+        <h3 class="section-title">
+          <mat-icon>person</mat-icon>
+          Visitor Management
+        </h3>
+        <div class="dashboard-actions">
+          <button mat-raised-button color="primary" routerLink="/visitor-log">
+            <mat-icon>person_add</mat-icon>
+            Log New Visitor
+          </button>
+
+          <button mat-raised-button color="accent">
+            <mat-icon>list</mat-icon>
+            View All Visitors
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="dashboard-section">
+        <h3 class="section-title">
+          <mat-icon>local_shipping</mat-icon>
+          Parcel Management
+        </h3>
+        <div class="dashboard-actions">
+          <button mat-raised-button color="primary" routerLink="/parcel-log">
+            <mat-icon>add_location</mat-icon>
+            Log New Parcel
+          </button>
+
+          <button mat-raised-button color="accent">
+            <mat-icon>inventory_2</mat-icon>
+            View All Parcels
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

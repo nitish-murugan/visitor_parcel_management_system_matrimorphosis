@@ -1,0 +1,307 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* ========== Snackbar Styling ========== */
+
+/* Error Snackbar - Default error (400, 409, etc) */
+.error-snackbar {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #f44336 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+}
+
+/* Auth Error Snackbar (401, 403) */
+.error-snackbar-auth {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #d32f2f !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .mat-mdc-button {
+      color: #ffeb3b !important;
+    }
+  }
+}
+
+/* Not Found Snackbar (404) */
+.error-snackbar-notfound {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #ff9800 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+}
+
+/* Server Error Snackbar (500+) */
+.error-snackbar-server {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #c62828 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .mat-mdc-button {
+      color: #ffeb3b !important;
+    }
+  }
+}
+
+/* Success Snackbar */
+.success-snackbar {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #4caf50 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+}
+
+/* Info Snackbar */
+.info-snackbar {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #2196f3 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .mat-mdc-button {
+      color: white !important;
+    }
+  }
+}
+
+/* Warning Snackbar */
+.warning-snackbar {
+  ::ng-deep {
+    .mdc-snackbar__surface {
+      background-color: #ffb300 !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      color: black !important;
+      font-weight: 600;
+    }
+
+    .mat-mdc-button {
+      color: black !important;
+    }
+  }
+}
+
+/* ========== Responsive Design Setup (Step 8.1) ========== */
+
+/* Breakpoints */
+$bp-sm: 600px;
+$bp-md: 960px;
+$bp-lg: 1280px;
+
+/* Container helpers */
+.container-responsive {
+  width: 100%;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+@media (min-width: $bp-sm) {
+  .container-responsive {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: $bp-md) {
+  .container-responsive {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .container-responsive {
+    max-width: 1280px;
+  }
+}
+
+/* Apply container to common pages */
+.visitor-log-container,
+.parcel-log-container {
+  width: 100%;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+@media (min-width: $bp-sm) {
+  .visitor-log-container,
+  .parcel-log-container {
+    max-width: 960px;
+  }
+}
+
+/* Card sizing */
+.login-card,
+.register-card,
+.visitor-log-card,
+.log-card {
+  width: 100%;
+}
+
+/* Grid helpers */
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-2 {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: $bp-md) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-3 {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: $bp-lg) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Form row behaves responsively */
+.form-row {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: $bp-md) {
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Width helpers used by templates */
+.full-width {
+  width: 100% !important;
+}
+
+.half-width {
+  width: 100% !important;
+}
+
+@media (min-width: $bp-md) {
+  .half-width {
+    width: 100% !important;
+  }
+}
+
+/* Flex helpers */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stack-on-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: $bp-md) {
+  .stack-on-mobile {
+    flex-direction: row;
+  }
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+
+/* Visibility helpers */
+.hide-on-mobile {
+  display: none !important;
+}
+.show-on-mobile {
+  display: initial !important;
+}
+
+@media (min-width: $bp-md) {
+  .hide-on-mobile {
+    display: initial !important;
+  }
+  .show-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Media helpers for images/previews */
+.photo-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

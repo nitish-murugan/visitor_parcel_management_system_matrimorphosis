@@ -1,0 +1,20 @@
+<nav class="breadcrumb-container" *ngIf="breadcrumbs.length > 0">
+  <div class="breadcrumb-wrapper responsive-container">
+    <mat-icon class="home-icon">home</mat-icon>
+    <span class="breadcrumb-item clickable" (click)="navigateTo('/home')">
+      Home
+    </span>
+
+    <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+      <mat-icon class="separator-icon">chevron_right</mat-icon>
+      <span
+        class="breadcrumb-item"
+        [class.clickable]="!last"
+        [class.active]="last"
+        (click)="!last && navigateTo(breadcrumb.url)"
+      >
+        {{ breadcrumb.label }}
+      </span>
+    </ng-container>
+  </div>
+</nav>

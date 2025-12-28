@@ -1,0 +1,150 @@
+.resident-dashboard {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  margin-bottom: 24px;
+}
+
+/* Notification Alert */
+.notification-alert {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  color: white;
+  border-radius: 8px;
+  animation: slideDown 0.5s ease-out;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    animation: pulse 2s infinite;
+  }
+
+  span {
+    flex: 1;
+    font-size: 16px;
+
+    strong {
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+
+  button {
+    font-weight: 500;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &.visitor-alert {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+    button {
+      background-color: white;
+      color: #667eea;
+    }
+  }
+
+  &.parcel-alert {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+
+    button {
+      background-color: white;
+      color: #f5576c;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dashboard-actions button {
+  padding: 0 24px;
+  height: 48px;
+  font-size: 16px;
+
+  &.action-with-badge {
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.dashboard-actions button mat-icon {
+  margin-right: 8px;
+}
+
+/* Notification Snackbar */
+::ng-deep .notification-snackbar {
+  background-color: #667eea !important;
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+
+  .mat-simple-snack-bar-content {
+    font-size: 16px;
+  }
+
+  .mat-simple-snackbar-action {
+    color: #ffd700 !important;
+    font-weight: 600;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .notification-alert {
+    flex-direction: column;
+    text-align: center;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

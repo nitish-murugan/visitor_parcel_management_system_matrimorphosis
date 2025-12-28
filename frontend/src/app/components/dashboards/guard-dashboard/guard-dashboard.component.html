@@ -1,0 +1,70 @@
+<div class="dashboard-container responsive-container">
+  <div class="dashboard-header">
+    <h1>Guard Dashboard</h1>
+    <p class="dashboard-subtitle">
+      Welcome back! Manage visitors and parcels efficiently.
+    </p>
+  </div>
+
+  <div class="quick-actions-grid">
+    <mat-card
+      *ngFor="let action of quickActions"
+      class="action-card"
+      [class.primary-card]="action.color === 'primary'"
+      [class.accent-card]="action.color === 'accent'"
+      (click)="navigateTo(action.route)"
+    >
+      <mat-card-content>
+        <div class="action-icon-wrapper">
+          <mat-icon [color]="action.color" class="action-icon">{{
+            action.icon
+          }}</mat-icon>
+        </div>
+        <h3 class="action-title">{{ action.title }}</h3>
+        <p class="action-description">{{ action.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="dashboard-info">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Quick Tips
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="tips-list">
+          <li>
+            <mat-icon class="tip-icon">check_circle</mat-icon>
+            <span
+              >Always verify visitor identification before logging entry</span
+            >
+          </li>
+          <li>
+            <mat-icon class="tip-icon">check_circle</mat-icon>
+            <span
+              >Log parcels immediately upon arrival for timely
+              notifications</span
+            >
+          </li>
+          <li>
+            <mat-icon class="tip-icon">check_circle</mat-icon>
+            <span
+              >Use the search features to quickly find visitor or parcel
+              records</span
+            >
+          </li>
+          <li>
+            <mat-icon class="tip-icon">check_circle</mat-icon>
+            <span
+              >Contact residents directly if there are any delivery
+              concerns</span
+            >
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

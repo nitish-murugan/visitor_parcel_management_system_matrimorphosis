@@ -1,0 +1,161 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person_add</mat-icon>
+        Create Account
+      </mat-card-title>
+      <mat-card-subtitle
+        >Join the Visitor & Parcel Management System</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <!-- Full Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            formControlName="fullName"
+            placeholder="Enter your full name"
+            required
+          />
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-hint>Minimum 2 characters</mat-hint>
+          <mat-error>{{ getErrorMessage("fullName") }}</mat-error>
+        </mat-form-field>
+
+        <!-- Phone Number -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            type="tel"
+            formControlName="phone"
+            placeholder="Enter your phone number"
+            required
+          />
+          <mat-icon matPrefix>phone</mat-icon>
+          <mat-hint>Digits only, 7-15 characters</mat-hint>
+          <mat-error>{{ getErrorMessage("phone") }}</mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            required
+          />
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-hint>Enter a valid email address</mat-hint>
+          <mat-error>{{ getErrorMessage("email") }}</mat-error>
+        </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="At least 6 characters"
+            required
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-hint>Use at least 6 characters for security</mat-hint>
+          <mat-error>{{ getErrorMessage("password") }}</mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            placeholder="Re-enter your password"
+            required
+          />
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hideConfirmPassword"
+          >
+            <mat-icon>{{
+              hideConfirmPassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-hint>Must match the password above</mat-hint>
+          <mat-error>{{ getErrorMessage("confirmPassword") }}</mat-error>
+        </mat-form-field>
+
+        <!-- Role Selection -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Register As</mat-label>
+          <mat-select formControlName="role" required>
+            <mat-option value="resident">Resident</mat-option>
+            <mat-option value="guard">Security Guard</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-hint>Select your role in the community</mat-hint>
+        </mat-form-field>
+
+        <!-- Terms and Conditions -->
+        <div class="terms-checkbox">
+          <mat-checkbox formControlName="agreeToTerms" required>
+            I agree to the
+            <a href="#" target="_blank">Terms and Conditions</a> and
+            <a href="#" target="_blank">Privacy Policy</a>
+          </mat-checkbox>
+          <mat-error
+            *ngIf="
+              registerForm.get('agreeToTerms')?.touched &&
+              registerForm.get('agreeToTerms')?.hasError('required')
+            "
+          >
+            You must agree to the terms and conditions
+          </mat-error>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="submit-button"
+          [disabled]="registerForm.invalid || isSubmitting"
+        >
+          <mat-icon>how_to_reg</mat-icon>
+          {{ isSubmitting ? "Creating Account..." : "Create Account" }}
+        </button>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          Already have an account?
+          <a routerLink="/login" mat-button color="primary">Login here</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

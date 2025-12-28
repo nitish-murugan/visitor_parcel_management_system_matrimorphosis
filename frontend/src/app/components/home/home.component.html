@@ -1,0 +1,90 @@
+<div class="resident-dashboard">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Resident Dashboard</mat-card-title>
+      <mat-card-subtitle
+        >Welcome! Manage your visitors and parcels</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Visitor Notification Alert -->
+      <div
+        *ngIf="pendingVisitorCount > 0"
+        class="notification-alert visitor-alert"
+      >
+        <mat-icon>notifications_active</mat-icon>
+        <span>
+          You have <strong>{{ pendingVisitorCount }}</strong> visitor{{
+            pendingVisitorCount > 1 ? "s" : ""
+          }}
+          waiting for approval
+        </span>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/resident-approval"
+        >
+          View Now
+        </button>
+      </div>
+
+      <!-- Parcel Notification Alert -->
+      <div
+        *ngIf="pendingParcelCount > 0"
+        class="notification-alert parcel-alert"
+      >
+        <mat-icon>notifications_active</mat-icon>
+        <span>
+          You have <strong>{{ pendingParcelCount }}</strong> parcel{{
+            pendingParcelCount > 1 ? "s" : ""
+          }}
+          awaiting collection
+        </span>
+        <button mat-raised-button color="accent" routerLink="/resident-parcel">
+          View Now
+        </button>
+      </div>
+
+      <div class="dashboard-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/resident-approval"
+          class="action-with-badge"
+        >
+          <mat-icon
+            [matBadge]="pendingVisitorCount > 0 ? pendingVisitorCount : null"
+            matBadgeColor="warn"
+            >pending_actions</mat-icon
+          >
+          Pending Approvals
+        </button>
+
+        <button
+          mat-raised-button
+          color="accent"
+          routerLink="/resident-parcel"
+          class="action-with-badge"
+        >
+          <mat-icon
+            [matBadge]="pendingParcelCount > 0 ? pendingParcelCount : null"
+            matBadgeColor="warn"
+            >local_shipping</mat-icon
+          >
+          My Parcels
+        </button>
+
+        <button mat-raised-button routerLink="/resident-approval">
+          <mat-icon>history</mat-icon>
+          Visitor History
+        </button>
+
+        <button mat-raised-button>
+          <mat-icon>settings</mat-icon>
+          Profile Settings
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

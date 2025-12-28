@@ -1,0 +1,74 @@
+.guard-dashboard {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  margin-bottom: 24px;
+}
+
+mat-divider {
+  margin: 24px 0;
+}
+
+.dashboard-section {
+  padding: 16px 0;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #2c3e50;
+
+    mat-icon {
+      color: #3498db;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  button {
+    padding: 0 24px;
+    height: 48px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .guard-dashboard {
+    padding: 16px;
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

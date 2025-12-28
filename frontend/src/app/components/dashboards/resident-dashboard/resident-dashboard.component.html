@@ -1,0 +1,126 @@
+<div class="dashboard-container responsive-container">
+  <div class="dashboard-header">
+    <h1>Welcome back, {{ userName }}!</h1>
+    <p class="dashboard-subtitle">
+      You have {{ totalPendingItems }} pending item{{
+        totalPendingItems !== 1 ? "s" : ""
+      }}
+      requiring your attention.
+    </p>
+  </div>
+
+  <div class="pending-summary-cards">
+    <mat-card class="summary-card visitor-card">
+      <mat-card-content>
+        <div class="summary-icon">
+          <mat-icon color="primary">people</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h2 class="count">{{ visitorCount }}</h2>
+          <p class="label">
+            Pending Visitor{{ visitorCount !== 1 ? "s" : "" }}
+          </p>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="visitorCount > 0"
+            (click)="navigateTo('/resident/visitor-approvals')"
+          >
+            Review Now
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card parcel-card">
+      <mat-card-content>
+        <div class="summary-icon">
+          <mat-icon color="accent">local_shipping</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h2 class="count">{{ parcelCount }}</h2>
+          <p class="label">Pending Parcel{{ parcelCount !== 1 ? "s" : "" }}</p>
+          <button
+            mat-raised-button
+            color="accent"
+            *ngIf="parcelCount > 0"
+            (click)="navigateTo('/resident/parcels')"
+          >
+            View Parcels
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="quick-links-section">
+    <h2 class="section-title">Quick Links</h2>
+    <div class="quick-links-grid">
+      <mat-card
+        *ngFor="let link of quickLinks"
+        class="link-card"
+        [class.has-notification]="getCount(link.countKey) > 0"
+        (click)="navigateTo(link.route)"
+      >
+        <mat-card-content>
+          <div class="link-header">
+            <mat-icon [color]="link.color" class="link-icon">{{
+              link.icon
+            }}</mat-icon>
+            <span
+              class="notification-badge"
+              *ngIf="getCount(link.countKey) > 0"
+            >
+              {{ getCount(link.countKey) }}
+            </span>
+          </div>
+          <h3 class="link-title">{{ link.title }}</h3>
+          <p class="link-description">{{ link.description }}</p>
+          <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>tips_and_updates</mat-icon>
+          Helpful Tips
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="tip-item">
+          <mat-icon class="tip-icon">notification_important</mat-icon>
+          <div class="tip-content">
+            <h4>Real-time Notifications</h4>
+            <p>
+              You'll receive instant notifications when visitors arrive or
+              parcels are delivered.
+            </p>
+          </div>
+        </div>
+        <div class="tip-item">
+          <mat-icon class="tip-icon">check_circle</mat-icon>
+          <div class="tip-content">
+            <h4>Quick Approvals</h4>
+            <p>
+              Review and approve visitors quickly to ensure smooth entry for
+              your guests.
+            </p>
+          </div>
+        </div>
+        <div class="tip-item">
+          <mat-icon class="tip-icon">schedule</mat-icon>
+          <div class="tip-content">
+            <h4>Timely Collection</h4>
+            <p>
+              Collect your parcels promptly to keep the parcel area organized.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

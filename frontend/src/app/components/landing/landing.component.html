@@ -1,0 +1,523 @@
+<div class="landing-container">
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+    <div class="particle particle-5"></div>
+    <div class="particle particle-6"></div>
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg-animation">
+      <div class="wave wave-1"></div>
+      <div class="wave wave-2"></div>
+      <div class="wave wave-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-text animate-slide-in-left">
+        <div class="badge animate-pulse">
+          <mat-icon>verified</mat-icon>
+          <span>Trusted Security Solution</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="gradient-text-animated">Visitor & Parcel</span>
+          <br />
+          <span class="text-glow">Management System</span>
+        </h1>
+        <p class="hero-subtitle">
+          Transform your property management with our intelligent, secure, and
+          efficient digital solution. Experience the future of building
+          security.
+        </p>
+        <div class="hero-buttons">
+          <button
+            mat-raised-button
+            class="btn-primary glow-effect"
+            (click)="navigateToLogin()"
+          >
+            <mat-icon>login</mat-icon>
+            Get Started
+            <span class="btn-shine"></span>
+          </button>
+          <button
+            mat-stroked-button
+            class="btn-secondary"
+            (click)="scrollToSection('features')"
+          >
+            <mat-icon>play_circle</mat-icon>
+            Watch Demo
+          </button>
+        </div>
+        <div class="trust-badges">
+          <div class="trust-item">
+            <mat-icon>groups</mat-icon>
+            <span>500+ Properties</span>
+          </div>
+          <div class="trust-item">
+            <mat-icon>star</mat-icon>
+            <span>4.9 Rating</span>
+          </div>
+          <div class="trust-item">
+            <mat-icon>security</mat-icon>
+            <span>100% Secure</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated VPMS Illustration -->
+      <div class="hero-illustration animate-slide-in-right">
+        <div class="illustration-container">
+          <!-- Building SVG Animation -->
+          <div class="building-wrapper">
+            <svg
+              class="building-svg"
+              viewBox="0 0 400 400"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!-- Main Building -->
+              <rect
+                class="building-main animate-building"
+                x="100"
+                y="80"
+                width="200"
+                height="280"
+                rx="10"
+                fill="url(#buildingGradient)"
+              />
+
+              <!-- Windows with animation -->
+              <g class="windows">
+                <rect
+                  class="window window-1"
+                  x="120"
+                  y="100"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-2"
+                  x="165"
+                  y="100"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-3"
+                  x="210"
+                  y="100"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-4"
+                  x="255"
+                  y="100"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+
+                <rect
+                  class="window window-5"
+                  x="120"
+                  y="150"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-6"
+                  x="165"
+                  y="150"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-7"
+                  x="210"
+                  y="150"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-8"
+                  x="255"
+                  y="150"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+
+                <rect
+                  class="window window-9"
+                  x="120"
+                  y="200"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-10"
+                  x="165"
+                  y="200"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-11"
+                  x="210"
+                  y="200"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+                <rect
+                  class="window window-12"
+                  x="255"
+                  y="200"
+                  width="35"
+                  height="35"
+                  rx="5"
+                />
+              </g>
+
+              <!-- Door -->
+              <rect
+                class="door"
+                x="170"
+                y="290"
+                width="60"
+                height="70"
+                rx="5"
+                fill="#4a5568"
+              />
+              <circle
+                class="door-handle"
+                cx="220"
+                cy="330"
+                r="5"
+                fill="#ffd700"
+              />
+
+              <!-- Visitor icon animated -->
+              <g class="visitor-animation">
+                <circle cx="70" cy="320" r="15" fill="#667eea" />
+                <rect
+                  x="60"
+                  y="340"
+                  width="20"
+                  height="30"
+                  rx="5"
+                  fill="#667eea"
+                />
+              </g>
+
+              <!-- Parcel icon animated -->
+              <g class="parcel-animation">
+                <rect
+                  x="320"
+                  y="310"
+                  width="40"
+                  height="35"
+                  rx="5"
+                  fill="#f6ad55"
+                />
+                <line
+                  x1="320"
+                  y1="325"
+                  x2="360"
+                  y2="325"
+                  stroke="#fff"
+                  stroke-width="2"
+                />
+              </g>
+
+              <!-- Security shield -->
+              <g class="shield-animation" transform="translate(180, 30)">
+                <path
+                  d="M20 0 L40 10 L40 30 C40 45 20 55 20 55 C20 55 0 45 0 30 L0 10 Z"
+                  fill="url(#shieldGradient)"
+                />
+                <path
+                  d="M15 25 L20 30 L30 18"
+                  stroke="#fff"
+                  stroke-width="3"
+                  fill="none"
+                  stroke-linecap="round"
+                  class="checkmark"
+                />
+              </g>
+
+              <!-- Signal waves -->
+              <g class="signal-waves" transform="translate(200, 60)">
+                <circle
+                  class="signal signal-1"
+                  cx="0"
+                  cy="0"
+                  r="10"
+                  fill="none"
+                  stroke="#667eea"
+                  stroke-width="2"
+                />
+                <circle
+                  class="signal signal-2"
+                  cx="0"
+                  cy="0"
+                  r="20"
+                  fill="none"
+                  stroke="#667eea"
+                  stroke-width="2"
+                />
+                <circle
+                  class="signal signal-3"
+                  cx="0"
+                  cy="0"
+                  r="30"
+                  fill="none"
+                  stroke="#667eea"
+                  stroke-width="2"
+                />
+              </g>
+
+              <!-- Gradients -->
+              <defs>
+                <linearGradient
+                  id="buildingGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stop-color="#1a1a2e" />
+                  <stop offset="100%" stop-color="#16213e" />
+                </linearGradient>
+                <linearGradient
+                  id="shieldGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stop-color="#667eea" />
+                  <stop offset="100%" stop-color="#764ba2" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <!-- Floating elements around illustration -->
+          <div class="floating-element elem-1">
+            <mat-icon>person_pin</mat-icon>
+          </div>
+          <div class="floating-element elem-2">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <div class="floating-element elem-3">
+            <mat-icon>notifications</mat-icon>
+          </div>
+          <div class="floating-element elem-4">
+            <mat-icon>qr_code_scanner</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" (click)="scrollToSection('features')">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="section-bg-pattern"></div>
+    <div class="section-header">
+      <span class="section-badge">Features</span>
+      <h2 class="section-title">Powerful Features</h2>
+      <p class="section-subtitle">
+        Everything you need to manage visitors and parcels efficiently
+      </p>
+    </div>
+    <div class="features-grid">
+      <div
+        class="feature-card"
+        *ngFor="let feature of features; let i = index"
+        [class]="'feature-card card-' + (i + 1)"
+      >
+        <div class="card-glow"></div>
+        <div class="feature-icon-wrapper">
+          <mat-icon class="feature-icon">{{ feature.icon }}</mat-icon>
+          <div class="icon-ring"></div>
+        </div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+        <div class="card-shine"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section">
+    <div class="section-header">
+      <span class="section-badge">Process</span>
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">
+        Simple 4-step process to secure your premises
+      </p>
+    </div>
+    <div class="steps-container">
+      <div class="step-card" *ngFor="let step of steps; let i = index">
+        <div class="step-number">{{ i + 1 }}</div>
+        <div class="step-connector" *ngIf="i < steps.length - 1"></div>
+        <div class="step-icon">
+          <mat-icon>{{ step.icon }}</mat-icon>
+        </div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="use-cases-section">
+    <div class="section-header">
+      <span class="section-badge">Use Cases</span>
+      <h2 class="section-title">Perfect For</h2>
+      <p class="section-subtitle">
+        Trusted by various organizations to enhance security and efficiency
+      </p>
+    </div>
+    <div class="use-cases-grid">
+      <div
+        class="use-case-card"
+        *ngFor="let useCase of useCases; let i = index"
+      >
+        <div class="use-case-bg"></div>
+        <div class="use-case-content">
+          <div class="use-case-icon">
+            <mat-icon>{{ useCase.icon }}</mat-icon>
+          </div>
+          <h3>{{ useCase.title }}</h3>
+          <p>{{ useCase.description }}</p>
+          <button mat-button class="learn-more-btn">
+            Learn More <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-bg-animation"></div>
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <div class="stat-icon">
+          <mat-icon>{{ stat.icon }}</mat-icon>
+        </div>
+        <div class="stat-value">
+          <span class="counter">{{ stat.value }}</span>
+          <span class="suffix">{{ stat.suffix }}</span>
+        </div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-particles">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="cta-content">
+      <h2>Ready to Secure Your Property?</h2>
+      <p>Join hundreds of properties using our visitor management system</p>
+      <div class="cta-buttons">
+        <button
+          mat-raised-button
+          class="btn-cta-primary"
+          (click)="navigateToLogin()"
+        >
+          <mat-icon>rocket_launch</mat-icon>
+          Start Free Trial
+        </button>
+        <button mat-stroked-button class="btn-cta-secondary">
+          <mat-icon>calendar_today</mat-icon>
+          Schedule Demo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-wave">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path
+          d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z"
+          fill="#0a0a1a"
+        />
+      </svg>
+    </div>
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <mat-icon>business</mat-icon>
+            <span>VPMS</span>
+          </div>
+          <p>Visitor & Parcel Management System</p>
+          <p class="tagline">
+            Securing your premises, simplifying your operations
+          </p>
+          <div class="social-links">
+            <a href="#"><mat-icon>facebook</mat-icon></a>
+            <a href="#"><mat-icon>language</mat-icon></a>
+            <a href="#"><mat-icon>mail</mat-icon></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h4>Product</h4>
+            <a (click)="scrollToSection('features')">Features</a>
+            <a href="#">Pricing</a>
+            <a href="#">Security</a>
+          </div>
+          <div class="link-group">
+            <h4>Company</h4>
+            <a href="#">About Us</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="link-group">
+            <h4>Support</h4>
+            <a href="#">Help Center</a>
+            <a href="#">Documentation</a>
+            <a href="#">API Reference</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VPMS. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

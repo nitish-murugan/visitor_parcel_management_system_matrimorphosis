@@ -1,0 +1,93 @@
+<div class="dashboard-container responsive-container">
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p class="dashboard-subtitle">
+      System management and configuration center.
+    </p>
+  </div>
+
+  <div class="quick-stats-grid">
+    <mat-card *ngFor="let stat of quickStats" class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon" [style.color]="stat.color">
+          <mat-icon>{{ stat.icon }}</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stat.value }}</h3>
+          <p class="stat-label">{{ stat.label }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="management-section">
+    <h2 class="section-title">Management Tools</h2>
+    <div class="management-grid">
+      <mat-card
+        *ngFor="let card of managementCards"
+        class="management-card"
+        [class.primary-card]="card.color === 'primary'"
+        [class.accent-card]="card.color === 'accent'"
+        [class.warn-card]="card.color === 'warn'"
+        (click)="navigateTo(card.route)"
+      >
+        <mat-card-content>
+          <div class="card-icon-wrapper">
+            <mat-icon [color]="card.color" class="card-icon">{{
+              card.icon
+            }}</mat-icon>
+          </div>
+          <h3 class="card-title">{{ card.title }}</h3>
+          <p class="card-description">{{ card.description }}</p>
+          <div class="card-footer">
+            <span class="card-stats">{{ card.stats }}</span>
+            <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>admin_panel_settings</mat-icon>
+          Admin Responsibilities
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="responsibility-item">
+          <mat-icon class="resp-icon">verified_user</mat-icon>
+          <div class="resp-content">
+            <h4>User Account Management</h4>
+            <p>
+              Create, update, and manage user accounts for residents and guards.
+              Ensure proper role assignments and access controls.
+            </p>
+          </div>
+        </div>
+        <div class="responsibility-item">
+          <mat-icon class="resp-icon">bar_chart</mat-icon>
+          <div class="resp-content">
+            <h4>System Monitoring</h4>
+            <p>
+              Monitor system activity, review reports, and ensure smooth
+              operation of all modules.
+            </p>
+          </div>
+        </div>
+        <div class="responsibility-item">
+          <mat-icon class="resp-icon">support_agent</mat-icon>
+          <div class="resp-content">
+            <h4>Technical Support</h4>
+            <p>
+              Provide support to users, troubleshoot issues, and maintain system
+              configurations.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

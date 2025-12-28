@@ -1,0 +1,70 @@
+.breadcrumb-container {
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.breadcrumb-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.home-icon {
+  color: #666;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.breadcrumb-item {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+
+  &.clickable {
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #3f51b5;
+      text-decoration: underline;
+    }
+  }
+
+  &.active {
+    color: #333;
+    font-weight: 500;
+  }
+}
+
+.separator-icon {
+  color: #999;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+// Responsive breakpoints
+@media (max-width: 600px) {
+  .breadcrumb-wrapper {
+    padding: 0 16px;
+    gap: 6px;
+  }
+
+  .breadcrumb-item {
+    font-size: 13px;
+  }
+
+  .home-icon,
+  .separator-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}

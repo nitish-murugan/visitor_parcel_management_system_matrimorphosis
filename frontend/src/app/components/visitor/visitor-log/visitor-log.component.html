@@ -1,0 +1,397 @@
+<div class="visitor-log-container">
+  <!-- All Visitors Records Section -->
+  <mat-card class="visitor-records-card" *ngIf="viewMode">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>people</mat-icon>
+        All Visitor Records
+      </mat-card-title>
+      <mat-card-subtitle>View all registered visitors</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoadingVisitors" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading visitor records...</p>
+      </div>
+
+      <div
+        *ngIf="!isLoadingVisitors && visitors.length === 0"
+        class="empty-state"
+      >
+        <mat-icon>people_outline</mat-icon>
+        <p>No visitor records found</p>
+      </div>
+
+      <div
+        *ngIf="!isLoadingVisitors && visitors.length > 0"
+        class="table-container"
+      >
+        <table mat-table [dataSource]="visitors" class="visitor-table">
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let visitor">{{ visitor.id }}</td>
+          </ng-container>
+
+          <!-- Visitor Name Column -->
+          <ng-container matColumnDef="visitorName">
+            <th mat-header-cell *matHeaderCellDef>Visitor Name</th>
+            <td mat-cell *matCellDef="let visitor">
+              {{ visitor.fullName || visitor.visitorName }}
+            </td>
+          </ng-container>
+
+          <!-- Visitor Phone Column -->
+          <ng-container matColumnDef="visitorPhone">
+            <th mat-header-cell *matHeaderCellDef>Phone</th>
+            <td mat-cell *matCellDef="let visitor">
+              {{ visitor.phone || visitor.visitorPhone }}
+            </td>
+          </ng-container>
+
+          <!-- Resident Name Column -->
+          <ng-container matColumnDef="residentName">
+            <th mat-header-cell *matHeaderCellDef>Resident</th>
+            <td mat-cell *matCellDef="let visitor">
+              {{ getResidentName(visitor.residentId) }}
+            </td>
+          </ng-container>
+
+          <!-- Purpose Column -->
+          <ng-container matColumnDef="purpose">
+            <th mat-header-cell *matHeaderCellDef>Purpose</th>
+            <td mat-cell *matCellDef="let visitor">{{ visitor.purpose }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let visitor">
+              <span
+                class="status-badge"
+                [ngClass]="getStatusBadgeClass(visitor.status)"
+              >
+                {{ visitor.status }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Entry Time Column -->
+          <ng-container matColumnDef="entryTime">
+            <th mat-header-cell *matHeaderCellDef>Entry Time</th>
+            <td mat-cell *matCellDef="let visitor">
+              {{
+                formatDateTime(
+                  visitor.arrivedAt || visitor.checkedInAt || visitor.createdAt
+                )
+              }}
+            </td>
+          </ng-container>
+
+          <!-- Exit Time Column -->
+          <ng-container matColumnDef="exitTime">
+            <th mat-header-cell *matHeaderCellDef>Exit Time</th>
+            <td mat-cell *matCellDef="let visitor">
+              {{ formatDateTime(visitor.checkedOutAt) }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Log New Visitor Section -->
+  <mat-card class="visitor-log-card" *ngIf="!viewMode">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person_add</mat-icon>
+        Log Visitor Entry
+      </mat-card-title>
+      <mat-card-subtitle>Record new visitor information</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-progress-bar
+        mode="indeterminate"
+        *ngIf="isSubmitting"
+      ></mat-progress-bar>
+      <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
+        <!-- Visitor Details Section -->
+        <div class="form-section">
+          <h3 class="section-title">Visitor Details</h3>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Visitor Name</mat-label>
+              <input
+                matInput
+                formControlName="visitor_name"
+                placeholder="Enter visitor name"
+                required
+              />
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-hint>Minimum 2 characters</mat-hint>
+              <mat-error>{{ getErrorMessage("visitor_name") }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Visitor Phone</mat-label>
+              <input
+                matInput
+                formControlName="visitor_phone"
+                placeholder="10-digit phone number"
+                maxlength="10"
+                required
+              />
+              <mat-icon matPrefix>phone</mat-icon>
+              <mat-hint>Format: 10-digit number (e.g., 9876543210)</mat-hint>
+              <mat-error>{{ getErrorMessage("visitor_phone") }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Purpose of Visit</mat-label>
+              <textarea
+                matInput
+                formControlName="visitor_purpose"
+                placeholder="Enter purpose of visit"
+                rows="3"
+                required
+              ></textarea>
+              <mat-icon matPrefix>description</mat-icon>
+              <mat-hint>Be specific about the reason for the visit</mat-hint>
+              <mat-error>{{ getErrorMessage("visitor_purpose") }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Resident Details Section -->
+        <div class="form-section">
+          <h3 class="section-title">Resident Details</h3>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Resident</mat-label>
+              <mat-select formControlName="resident_id" required>
+                <mat-option
+                  *ngFor="let resident of residents"
+                  [value]="resident.id"
+                >
+                  {{ resident.name }} - {{ resident.flat }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>home</mat-icon>
+              <mat-hint>Choose the resident being visited</mat-hint>
+              <mat-error>{{ getErrorMessage("resident_id") }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Resident Name</mat-label>
+              <input
+                matInput
+                formControlName="resident_name"
+                readonly
+                required
+              />
+              <mat-icon matPrefix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Flat Number</mat-label>
+              <input
+                matInput
+                formControlName="resident_flat"
+                readonly
+                required
+              />
+              <mat-icon matPrefix>apartment</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Resident Phone</mat-label>
+              <input
+                matInput
+                formControlName="resident_phone"
+                readonly
+                required
+              />
+              <mat-icon matPrefix>phone</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Vehicle Details Section (Optional) -->
+        <div class="form-section">
+          <h3 class="section-title">Vehicle Details (Optional)</h3>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Vehicle Type</mat-label>
+              <mat-select formControlName="vehicle_type">
+                <mat-option value="">None</mat-option>
+                <mat-option value="Two Wheeler">Two Wheeler</mat-option>
+                <mat-option value="Four Wheeler">Four Wheeler</mat-option>
+                <mat-option value="Bicycle">Bicycle</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>directions_car</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Vehicle Number</mat-label>
+              <input
+                matInput
+                formControlName="vehicle_number"
+                placeholder="e.g., MH01AB1234"
+              />
+              <mat-icon matPrefix>tag</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Photo and ID Upload Section (Optional) -->
+        <div class="form-section">
+          <h3 class="section-title">Documents (Optional)</h3>
+
+          <div class="upload-section">
+            <div class="upload-item">
+              <label class="upload-label">
+                <mat-icon>photo_camera</mat-icon>
+                Visitor Photo
+              </label>
+              <div class="upload-controls">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  type="button"
+                  (click)="photoInput.click()"
+                >
+                  <mat-icon>upload</mat-icon>
+                  Choose Photo
+                </button>
+                <input
+                  #photoInput
+                  type="file"
+                  accept="image/*"
+                  (change)="onPhotoSelected($event)"
+                  style="display: none"
+                />
+
+                <div *ngIf="selectedPhotoFile" class="file-info">
+                  <span>{{ selectedPhotoFile.name }}</span>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    type="button"
+                    (click)="removePhoto()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="photoPreview" class="photo-preview">
+                <img [src]="photoPreview" alt="Visitor photo preview" />
+              </div>
+            </div>
+
+            <div class="upload-item">
+              <label class="upload-label">
+                <mat-icon>badge</mat-icon>
+                ID Proof
+              </label>
+              <div class="upload-controls">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  type="button"
+                  (click)="idProofInput.click()"
+                >
+                  <mat-icon>upload</mat-icon>
+                  Choose ID Proof
+                </button>
+                <input
+                  #idProofInput
+                  type="file"
+                  accept="image/*,.pdf"
+                  (change)="onIdProofSelected($event)"
+                  style="display: none"
+                />
+
+                <div *ngIf="selectedIdProofFile" class="file-info">
+                  <span>{{ selectedIdProofFile.name }}</span>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    type="button"
+                    (click)="removeIdProof()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expected Entry Time and Exit Time (Optional) -->
+        <div class="form-section">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Expected Entry Time</mat-label>
+              <input
+                matInput
+                type="datetime-local"
+                formControlName="expected_entry_time"
+              />
+              <mat-icon matPrefix>schedule</mat-icon>
+              <mat-hint>Leave empty if entering now</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Exit Time</mat-label>
+              <input
+                matInput
+                type="datetime-local"
+                formControlName="exit_time"
+              />
+              <mat-icon matPrefix>logout</mat-icon>
+              <mat-hint>Optional - when visitor left</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <mat-card-actions class="form-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="visitorForm.invalid || isSubmitting"
+          >
+            <mat-icon>save</mat-icon>
+            {{ isSubmitting ? "Logging..." : "Log Visitor" }}
+          </button>
+
+          <button
+            mat-raised-button
+            type="button"
+            (click)="resetForm()"
+            [disabled]="isSubmitting"
+          >
+            <mat-icon>refresh</mat-icon>
+            Reset
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
